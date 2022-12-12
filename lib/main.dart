@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'TodoList',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
@@ -32,13 +32,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<String> names = <String>[];
+  final List<String> todos = <String>[];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController todoController = TextEditingController();
 
   void addItemToList(){
     setState(() {
-      names.insert(0,todoController.text);
+      todos.insert(0,todoController.text);
       todoController.clear();
     });
   }
@@ -89,14 +89,14 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(10),
-              itemCount: names.length,
+              itemCount: todos.length,
               itemBuilder: (BuildContext context, int index){
                 return Container(
                   height: 50,
                   margin: EdgeInsets.all(2),
                   color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
                   child: Center(
-                  child: Text('${names[index]}',
+                  child: Text('${todos[index]}',
                   style: TextStyle(fontSize: 20),
                 )
                   )
