@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<String> todos = <String>[];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController todoController = TextEditingController();
+  String text = '';
 
   void addItemToList(){
     setState(() {
@@ -42,6 +43,11 @@ class _MyHomePageState extends State<MyHomePage> {
       todoController.clear();
     });
   }
+
+  void removeItemAtIndex(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,16 +97,67 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(10),
               itemCount: todos.length,
               itemBuilder: (BuildContext context, int index){
-                return Container(
-                  height: 50,
-                  margin: EdgeInsets.all(2),
-                  color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
-                  child: Center(
-                  child: Text('${todos[index]}',
-                  style: TextStyle(fontSize: 20),
-                )
+                return InkWell(
+                  onTap:(){
+                    showDialog(
+                        context: context,
+                        builder: (context) => SimpleDialog(
+                      children: [
+                        TextField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Enter new text'
+                          ),
+                          onChanged: (value){
+                            setState(() {
+                              text = value;
+                            });
+                          },
+                        ),
+                        ElevatedButton(onPressed: () {
+                          setState(() {
+                            todos[index] = text;
+                          });
+                          Navigator.pop(context);
+                        },
+                            child: Text('Apply'))
+                      ],
+                    ),
+                    );
+                  },
+                  child: Container(
+                    height: 50,
+                    margin: EdgeInsets.all(2),
+                    color: Color(0xBDC9C9BB),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                              padding: EdgeInsets.fromLTRB(15,0,0,0),
+                              child: Text('${todos[index]}', style: TextStyle(fontWeight: FontWeight.bold),),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(0.0),
+                          width: 30,
+                          child: IconButton(
+                            padding: EdgeInsets.fromLTRB(0,0,20,0),
+                            constraints: BoxConstraints(),
+                            onPressed: (){
+                              setState(() {
+                                 todos.removeAt(index);
+                              });
+                            }, icon: Icon(Icons.delete),
+                          ),
+                        )
+                      ],
+                    //child: Text('${todos[index]}',
+                    //style: TextStyle(fontSize: 20),
                   )
-                );
+                    )
+
+                  );
+
               }
             ),
           ),
